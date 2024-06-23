@@ -6,7 +6,7 @@ import asyncio
 from typing import Union
 
 from dotenv import load_dotenv
-import openai
+from openai import AzureOpenAI
 from deepgram import Deepgram
 import pygame
 from pygame import mixer
