@@ -111,4 +111,4 @@ t = Thread(
 )
 t.start()
 
-gui.run(debug=True, dark_mode=True)
+gui.run(debug=True, dark_mode=True, port=3000)
