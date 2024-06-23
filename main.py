@@ -103,7 +103,7 @@ if __name__ == "__main__":
 
         # Get response from GPT-3
         current_time = time()
-        context += f"\nAlex: {string_words}\nJarvis: "
+        context += f"\Brandon: {string_words}\nJarvis: "
         response = request_gpt(context)
         context += response
         gpt_time = time() - current_time
