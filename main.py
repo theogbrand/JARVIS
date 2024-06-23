@@ -10,24 +10,21 @@ from openai import AzureOpenAI
 from deepgram import Deepgram
 import pygame
 from pygame import mixer
-import elevenlabs
+from tts import get_audio_response
 
 from record import speech_to_text
 
 # Load API keys
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
-elevenlabs.set_api_key(os.getenv("ELEVENLABS_API_KEY"))
 
 # Initialize APIs
-gpt_client = openai.Client(api_key=OPENAI_API_KEY)
 deepgram = Deepgram(DEEPGRAM_API_KEY)
 # mixer is a pygame module for playing audio
 mixer.init()
 
 # Change the context if you want to change Jarvis' personality
-context = "You are Jarvis, Alex's human assistant. You are witty and full of personality. Your answers should be limited to 1-2 short sentences."
+context = "You are Jarvis, Brandon's human assistant. You are witty and full of personality. Your answers should be limited to 1-2 short sentences."
 conversation = {"Conversation": []}
 RECORDING_PATH = "audio/recording.wav"
 
@@ -114,10 +111,11 @@ if __name__ == "__main__":
 
         # Convert response to audio
         current_time = time()
-        audio = elevenlabs.generate(
-            text=response, voice="Adam", model="eleven_monolingual_v1"
-        )
-        elevenlabs.save(audio, "audio/response.wav")
+        get_audio_response(response)
+        # audio = elevenlabs.generate(
+        #     text=response, voice="Adam", model="eleven_monolingual_v1"
+        # )
+        # elevenlabs.save(audio, "audio/response.wav")
         audio_time = time() - current_time
         log(f"Finished generating audio in {audio_time:.2f} seconds.")
 
