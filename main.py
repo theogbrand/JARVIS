@@ -43,14 +43,16 @@ def request_gpt(prompt: str) -> str:
     Returns:
         The response from the API.
     """
-    response = gpt_client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": f"{prompt}",
-            }
-        ],
-        model="gpt-3.5-turbo",
+    client = AzureOpenAI(
+                azure_endpoint=os.environ["AZURE_OPENAI_BASE_URL"],
+                api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+                api_key=os.environ["AZURE_OPENAI_API_KEY"],
+            )
+
+    response = client.chat.completions.create(
+        model=os.environ["AZURE_OPENAI_MODEL_ID"],
+        temperature=0,
+        messages=[{"role": "user", "content": prompt}],
     )
     return response.choices[0].message.content
 
