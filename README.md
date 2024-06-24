@@ -1,5 +1,9 @@
 # JARVIS
 
+## TODO
+1. try Suno [Bark](https://huggingface.co/suno/bark?text=hi+i+like+pizza) or [Coqui](https://huggingface.co/coqui/XTTS-v2) TTS for better mL support
+2. Bark has powerful text-based features like one-shot diarisation, adding [laughter] and indicating music style purely from text description
+
 <p align="center">
   <img src="media/cqb_conv.png" alt="JARVIS helping me choose a firearm" width="100%"/>
 </p>
