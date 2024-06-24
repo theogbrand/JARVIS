@@ -1,0 +1,19 @@
+hi
+Hey there! What can I do for you today?
+k just cool see like hello whatever hi my name is ivan testing out the transcription of cart
+Hello, Ivan! It looks like the transcription is working just fine.
+what it says k just c like hello hello my hi my name is ivan just out the transcription of current yeah so is should not
+It seems like there may be some errors in the transcription, but we can work on fixing that.
+
+Is there anything else you need help with, Ivan?
+hey this is racist oh wait this is no react you can try something else
+I'm sorry to hear that, Ivan. Let me know if there's anything specific you'd like to try instead.
+
+Hey Brandon, what can I help you with today?
+
+Hey Brandon, what's on your mind?
+i think this is something by the way this is deep deepgram good
+Deepgram is a great tool for analyzing audio and speech. How can I assist you with it?
+<coroutine object groq_transcribe at 0x107a5e740>
+ That's a nice product, uh, get, uh, robots. What are we gonna do? Fight, fighter robots. Subhuman ones.
+I'm not sure what you're asking, Brandon. Are you looking for fighter robots or something else?

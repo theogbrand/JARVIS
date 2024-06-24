@@ -1,4 +1,5 @@
 """Main file for the Jarvis project"""
+
 import os
 from os import PathLike
 from time import time
@@ -13,6 +14,7 @@ from pygame import mixer
 from tts import get_audio_response
 
 from record import speech_to_text
+from groq_stt import groq_transcribe
 
 # Load API keys
 load_dotenv()
@@ -41,10 +43,10 @@ def request_gpt(prompt: str) -> str:
         The response from the API.
     """
     client = AzureOpenAI(
-                azure_endpoint=os.environ["AZURE_OPENAI_BASE_URL"],
-                api_version=os.environ["AZURE_OPENAI_API_VERSION"],
-                api_key=os.environ["AZURE_OPENAI_API_KEY"],
-            )
+        azure_endpoint=os.environ["AZURE_OPENAI_BASE_URL"],
+        api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+        api_key=os.environ["AZURE_OPENAI_API_KEY"],
+    )
 
     response = client.chat.completions.create(
         model=os.environ["AZURE_OPENAI_MODEL_ID"],
@@ -90,12 +92,13 @@ if __name__ == "__main__":
 
         # Transcribe audio
         current_time = time()
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        words = loop.run_until_complete(transcribe(RECORDING_PATH))
-        string_words = " ".join(
-            word_dict.get("word") for word_dict in words if "word" in word_dict
-        )
+        string_words = groq_transcribe(RECORDING_PATH)
+        # loop = asyncio.new_event_loop()
+        # asyncio.set_event_loop(loop)
+        # words = loop.run_until_complete(transcribe(RECORDING_PATH))
+        # string_words = " ".join(
+        #     word_dict.get("word") for word_dict in words if "word" in word_dict
+        # )
         with open("conv.txt", "a") as f:
             f.write(f"{string_words}\n")
         transcription_time = time() - current_time
