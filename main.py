@@ -15,6 +15,7 @@ from tts import get_audio_response
 
 from record import speech_to_text
 from groq_stt import groq_transcribe
+from llm import LLM
 
 # Load API keys
 load_dotenv()
@@ -92,22 +93,25 @@ if __name__ == "__main__":
 
         # Transcribe audio
         current_time = time()
-        string_words = groq_transcribe(RECORDING_PATH)
+        human_reply = groq_transcribe(RECORDING_PATH)
         # loop = asyncio.new_event_loop()
         # asyncio.set_event_loop(loop)
         # words = loop.run_until_complete(transcribe(RECORDING_PATH))
-        # string_words = " ".join(
+        # human_reply = " ".join(
         #     word_dict.get("word") for word_dict in words if "word" in word_dict
         # )
         with open("conv.txt", "a") as f:
-            f.write(f"{string_words}\n")
+            f.write(f"{human_reply}\n")
         transcription_time = time() - current_time
         log(f"Finished transcribing in {transcription_time:.2f} seconds.")
 
         # Get response from GPT-3
         current_time = time()
-        context += f"\Brandon: {string_words}\nJarvis: "
-        response = request_gpt(context)
+        # context += f"\Brandon: {human_reply}\nJarvis: "
+        # response = request_gpt(context)
+        response = LLM(system_message=context).generate_response(
+            messages=[{"role": "user", "content": human_reply}]
+        )
         context += response
         gpt_time = time() - current_time
         log(f"Finished generating response in {gpt_time:.2f} seconds.")
@@ -130,4 +134,4 @@ if __name__ == "__main__":
             f.write(f"{response}\n")
         sound.play()
         pygame.time.wait(int(sound.get_length() * 1000))
-        print(f"\n --- USER: {string_words}\n --- JARVIS: {response}\n")
+        print(f"\n --- USER: {human_reply}\n --- JARVIS: {response}\n")
