@@ -7,6 +7,7 @@ from pathlib import Path
 
 from rhasspysilence import WebRtcVadRecorder, VoiceCommand, VoiceCommandResult
 import pyaudio
+import keyboard
 
 pa = pyaudio.PyAudio()
 
@@ -18,8 +19,11 @@ def speech_to_text() -> None:
     """
     recorder = WebRtcVadRecorder(
         vad_mode=3,
-        silence_seconds=4,
+        silence_seconds=60,
     )
+    print("Press Enter to start recording...")
+    keyboard.wait('enter')  # Wait for Enter key to start recording
+    print("Recording started. Press Enter to stop.")
     recorder.start()
     # file directory
     wav_sink = "audio/"
@@ -65,8 +69,10 @@ def speech_to_text() -> None:
             # Look for speech/silence
             voice_command = recorder.process_chunk(chunk)
 
-            if voice_command:
-                _ = voice_command.result == VoiceCommandResult.FAILURE
+            # if voice_command:
+            #     _ = voice_command.result == VoiceCommandResult.FAILURE
+            if keyboard.is_pressed('enter'):
+                print("Recording stopped.")
                 # Reset
                 audio_data = recorder.stop()
                 if wav_dir:
@@ -79,7 +85,7 @@ def speech_to_text() -> None:
                     break
                 elif wav_sink:
                     # Write to WAV file
-                    wav_bytes = core.buffer_to_wav(audio_data)
+                    wav_bytes = buffer_to_wav(audio_data)
                     wav_sink.write(wav_bytes)
             # Next audio chunk
             chunk = audio_source.read(960)
@@ -92,4 +98,4 @@ def speech_to_text() -> None:
 
 
 if __name__ == "__main__":
-    SpeechToText()
+    speech_to_text()
