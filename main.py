@@ -8,7 +8,7 @@ from typing import Union
 
 from dotenv import load_dotenv
 from openai import AzureOpenAI
-from deepgram import Deepgram
+from deepgram import Deepgram, DeepgramClient, PrerecordedOptions, FileSource
 import pygame
 from pygame import mixer
 from tts import get_audio_response
@@ -16,13 +16,14 @@ from tts import get_audio_response
 from record import speech_to_text
 from groq_stt import groq_transcribe
 from llm import LLM
+import json
 
 # Load API keys
 load_dotenv()
 DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
 # Initialize APIs
-deepgram = Deepgram(DEEPGRAM_API_KEY)
+# deepgram = Deepgram(DEEPGRAM_API_KEY)
 # mixer is a pygame module for playing audio
 mixer.init()
 
@@ -57,7 +58,7 @@ def request_gpt(prompt: str) -> str:
     return response.choices[0].message.content
 
 
-async def transcribe(
+async def deepgram_transcribe(
     file_name: Union[Union[str, bytes, PathLike[str], PathLike[bytes]], int]
 ):
     """
@@ -69,10 +70,37 @@ async def transcribe(
     Returns:
         The response from the API.
     """
-    with open(file_name, "rb") as audio:
-        source = {"buffer": audio, "mimetype": "audio/wav"}
-        response = await deepgram.transcription.prerecorded(source)
-        return response["results"]["channels"][0]["alternatives"][0]["words"]
+    # with open(file_name, "rb") as audio:
+    #     source = {"buffer": audio, "mimetype": "audio/wav"}
+    #     response = await deepgram.transcription.prerecorded(source)
+    #     return response["results"]["channels"][0]["alternatives"][0]["words"]
+    with open(file_name, 'rb') as audio:
+        try:
+            # STEP 1 Create a Deepgram client using the DEEPGRAM_API_KEY from environment variables
+            deepgram = DeepgramClient(DEEPGRAM_API_KEY)
+            buffer_data = audio.read()
+
+            payload: FileSource = {
+                "buffer": buffer_data,
+            }
+
+            # STEP 2 Call the transcribe_url method on the prerecorded class
+            options = PrerecordedOptions(
+                model="nova-2",
+                smart_format=True,
+                summarize="v2",
+            )
+            file_response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options)
+
+            json_data = file_response.to_json()
+            data = json.loads(json_data)
+            print(f"{data}")
+
+            return data["results"]["summary"]["short"]
+            exit()
+
+        except Exception as e:
+            print(f"Exception: {e}")
 
 
 def log(log: str):
@@ -93,10 +121,10 @@ if __name__ == "__main__":
 
         # Transcribe audio
         current_time = time()
-        human_reply = groq_transcribe(RECORDING_PATH)
-        # loop = asyncio.new_event_loop()
-        # asyncio.set_event_loop(loop)
-        # words = loop.run_until_complete(transcribe(RECORDING_PATH))
+        # human_reply = groq_transcribe(RECORDING_PATH)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        human_reply = loop.run_until_complete(deepgram_transcribe(RECORDING_PATH))
         # human_reply = " ".join(
         #     word_dict.get("word") for word_dict in words if "word" in word_dict
         # )
