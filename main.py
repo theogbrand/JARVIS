@@ -8,7 +8,7 @@ from typing import Union
 
 from dotenv import load_dotenv
 from openai import AzureOpenAI
-from deepgram import Deepgram, DeepgramClient, PrerecordedOptions, FileSource
+from deepgram import DeepgramClient, PrerecordedOptions, FileSource
 import pygame
 from pygame import mixer
 from tts import get_audio_response
@@ -24,6 +24,7 @@ DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
 # Initialize APIs
 # deepgram = Deepgram(DEEPGRAM_API_KEY)
+deepgram = DeepgramClient(DEEPGRAM_API_KEY)
 # mixer is a pygame module for playing audio
 mixer.init()
 
@@ -77,7 +78,6 @@ async def deepgram_transcribe(
     with open(file_name, 'rb') as audio:
         try:
             # STEP 1 Create a Deepgram client using the DEEPGRAM_API_KEY from environment variables
-            deepgram = DeepgramClient(DEEPGRAM_API_KEY)
             buffer_data = audio.read()
 
             payload: FileSource = {
@@ -94,10 +94,8 @@ async def deepgram_transcribe(
 
             json_data = file_response.to_json()
             data = json.loads(json_data)
-            print(f"{data}")
 
             return data["results"]["summary"]["short"]
-            exit()
 
         except Exception as e:
             print(f"Exception: {e}")
