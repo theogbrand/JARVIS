@@ -76,7 +76,7 @@ async def deepgram_transcribe(
     #     source = {"buffer": audio, "mimetype": "audio/wav"}
     #     response = await deepgram.transcription.prerecorded(source)
     #     return response["results"]["channels"][0]["alternatives"][0]["words"]
-    with open(file_name, 'rb') as audio:
+    with open(file_name, "rb") as audio:
         try:
             # STEP 1 Create a Deepgram client using the DEEPGRAM_API_KEY from environment variables
             buffer_data = audio.read()
@@ -90,8 +90,11 @@ async def deepgram_transcribe(
                 model="nova-2",
                 smart_format=True,
                 summarize="v2",
+                # detect_language=True,
             )
-            file_response = deepgram.listen.prerecorded.v("1").transcribe_file(payload, options)
+            file_response = deepgram.listen.prerecorded.v("1").transcribe_file(
+                payload, options
+            )
 
             json_data = file_response.to_json()
             data = json.loads(json_data)

@@ -10,6 +10,7 @@ def get_audio_response(text):
     url = "https://api.cartesia.ai/tts/bytes"
     payload = {
         "model_id": "sonic-english",
+        # "model_id": "sonic-multilingual",
         "transcript": text,
         "duration": 123,
         "voice": {
