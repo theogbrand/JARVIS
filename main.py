@@ -133,8 +133,8 @@ def add_conversation_data(conversations_arr):
         if filename.endswith('.json') and str(current_day_epoch) in filename:
             matching_files.append(filename)
 
-    for file in matching_files:
-        print("matched file: ", file)
+    # for file in matching_files:
+    #     print("matched file: ", file)
 
     for file in matching_files:
         with open(os.path.join(directory, file), 'r+') as f:
@@ -158,7 +158,6 @@ if __name__ == "__main__":
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         human_reply = loop.run_until_complete(deepgram_transcribe(RECORDING_PATH))
-        print(human_reply)
         # human_reply = " ".join(
         #     word_dict.get("word") for word_dict in words if "word" in word_dict
         # )
