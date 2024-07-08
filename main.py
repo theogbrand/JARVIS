@@ -14,10 +14,11 @@ from pygame import mixer
 from tts import get_audio_response
 
 from record import speech_to_text
-from groq_stt import groq_transcribe
+# from groq_stt import groq_transcribe
 from llm import LLM
 import json
 from datetime import datetime
+from rag_tools import reflect_tool
 
 # Load API keys
 load_dotenv()

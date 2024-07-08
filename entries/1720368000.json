@@ -34,6 +34,30 @@
                 "role": "assistant",
                 "content": "Hey there! What's on your mind? I'm all ears... well, metaphorically speaking, of course."
             }
+        ],
+        [
+            {
+                "timestamp": 1720450093,
+                "role": "user",
+                "content": "Hey, Jarvis."
+            },
+            {
+                "timestamp": 1720450095,
+                "role": "assistant",
+                "content": "Hello there! It's great to hear from you. How can I assist you today, Brandon?"
+            }
+        ],
+        [
+            {
+                "timestamp": 1720450110,
+                "role": "user",
+                "content": "What is the meaning of life?"
+            },
+            {
+                "timestamp": 1720450113,
+                "role": "assistant",
+                "content": "Oh, just a light question to start the day, eh? I'd say it's 42, but that's a bit clich\u00e9. Perhaps it's simply to enjoy a good cup of coffee and witty banter."
+            }
         ]
     ]
 }
