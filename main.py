@@ -120,7 +120,6 @@ def to_epoch(dt):
 
 
 def add_conversation_data(conversations_arr):
-    # Define the directory to search
     directory = 'entries'
 
     # Get the current date at the start of the day (midnight)
@@ -128,17 +127,14 @@ def add_conversation_data(conversations_arr):
     start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
     current_day_epoch = to_epoch(start_of_day)
 
-    # Search for JSON files in the directory with names matching the current day's epoch timestamp
     matching_files = []
     for filename in os.listdir(directory):
         if filename.endswith('.json') and str(current_day_epoch) in filename:
             matching_files.append(filename)
 
-    # Print the matching files
     for file in matching_files:
         print("matched file: ", file)
 
-    # Optional: Load and process the JSON files
     for file in matching_files:
         with open(os.path.join(directory, file), 'r+') as f:
             data = json.load(f)
@@ -146,28 +142,6 @@ def add_conversation_data(conversations_arr):
             f.seek(0)
             f.truncate()
             json.dump(data, f)
-            # print(data)
-    # with open("conv.json", "r+") as f:
-    #     now = datetime.now()
-    #     key = to_epoch(now.replace(hour=0, minute=0, second=0, microsecond=0))
-        
-    #     try:
-    #         conversations_data = json.load(f)
-    #     except json.JSONDecodeError:
-    #         conversations_data = {"date": key, "conversation_counter": 0, "conversations": []}
-        
-    #     if conversations_data["date"] != key:
-    #         conversations_data = {"date": key, "conversation_counter": 0, "conversations": []}
-        
-    #     data_to_add = {"timestamp": to_epoch(now), "role": role, "message": message}
-    #     conversations_data["conversations"].append(data_to_add)
-    #     # conversations_data["conversation_counter"] += 1
-        
-    #     f.seek(0)
-    #     f.truncate()
-    #     json.dump(conversations_data, f)
-        
-    #     return conversations_data
 
 
 if __name__ == "__main__":
@@ -195,10 +169,8 @@ if __name__ == "__main__":
         transcription_time = time() - current_time
         log(f"Finished transcribing in {transcription_time:.2f} seconds.")
 
-        # Get response from GPT-3
+        # Get response from AI
         current_time = time()
-        # context += f"\Brandon: {human_reply}\nJarvis: "
-        # response = request_gpt(context)
         conversation.append({"role": "user", "content": human_reply})
         llm_conversation.append({"timestamp": to_epoch(datetime.now()), "role": "user", "content": human_reply})
         ai_response = LLM(system_message=system_prompt).generate_response(
@@ -232,8 +204,5 @@ if __name__ == "__main__":
         # add_conversation_data("assistant", ai_response)
         add_conversation_data(llm_conversation)
         sound.play()
-        # Save to JSON file
-        # with open("voice_memos.json", "w") as file:
-        #     json.dump(conversations, file, indent=4)
         pygame.time.wait(int(sound.get_length() * 1000))
         print(f"\n --- USER: {human_reply}\n --- JARVIS: {ai_response}\n")
