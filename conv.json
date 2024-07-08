@@ -1,0 +1,76 @@
+{
+    "human_reply": "Hey, Jarvis."
+}
+{
+    "human_reply": ""
+}
+{
+    "human_reply": "Hey, Jarvis."
+}
+{
+    "ai_response": "Hello there! It's good to see you. What can I do for you today?"
+}
+{
+    "human_reply": ""
+}
+{
+    "date": 1720406400, // Equivalent to "2024-07-08" in epoch time
+    "conversations": [
+        {
+            "id": "1",
+            "timestamp": 1720440600, // Equivalent to "2024-07-08 10:30:00" in epoch time
+            "transcript": [
+                {
+                    "speaker": "user",
+                    "text": "Today, we discussed the new project timeline and assigned tasks to each team member."
+                },
+                {
+                    "speaker": "ai",
+                    "text": "What are the main milestones for the project?"
+                },
+                {
+                    "speaker": "user",
+                    "text": "The main milestones include the initial design phase, development, testing, and final deployment."
+                },
+                {
+                    "speaker": "ai",
+                    "text": "Can you elaborate on the initial design phase?"
+                },
+                {
+                    "speaker": "user",
+                    "text": "The initial design phase involves creating wireframes, gathering requirements, and setting up project documentation."
+                },
+                {
+                    "speaker": "ai",
+                    "text": "What are the key requirements you have identified?"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "timestamp": 1720458000, // Equivalent to "2024-07-08 11:00:00" in epoch time
+            "transcript": [
+                {
+                    "speaker": "user",
+                    "text": "Let's discuss the marketing strategy for our new product."
+                },
+                {
+                    "speaker": "ai",
+                    "text": "Sure, what are your initial thoughts on the target audience?"
+                },
+                {
+                    "speaker": "user",
+                    "text": "We are targeting tech-savvy young professionals who are early adopters of new technology."
+                },
+                {
+                    "speaker": "ai",
+                    "text": "What channels do you think will be most effective in reaching them?"
+                },
+                {
+                    "speaker": "user",
+                    "text": "Social media platforms like Twitter, LinkedIn, and Instagram will be key, along with tech blogs and influencer partnerships."
+                }
+            ]
+        }
+    ]
+}

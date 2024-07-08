@@ -130,8 +130,11 @@ if __name__ == "__main__":
         # human_reply = " ".join(
         #     word_dict.get("word") for word_dict in words if "word" in word_dict
         # )
-        with open("conv.txt", "a") as f:
-            f.write(f"{human_reply}\n")
+        
+        conversation_data = {"human_reply": human_reply}
+        with open("conv.json", "a") as f:
+            json.dump(conversation_data, f)
+            f.write("\n")
         transcription_time = time() - current_time
         log(f"Finished transcribing in {transcription_time:.2f} seconds.")
 
@@ -162,8 +165,12 @@ if __name__ == "__main__":
         log("Speaking...")
         sound = mixer.Sound("audio/response.wav")
         # Add response as a new line to conv.txt
-        with open("conv.txt", "a") as f:
-            f.write(f"{ai_response}\n")
+        # with open("conv.txt", "a") as f:
+        #     f.write(f"{ai_response}\n")
+        conversation_data = {"ai_response": ai_response}
+        with open("conv.json", "a") as f:
+            json.dump(conversation_data, f)
+            f.write("\n")
         sound.play()
         pygame.time.wait(int(sound.get_length() * 1000))
         print(f"\n --- USER: {human_reply}\n --- JARVIS: {ai_response}\n")
