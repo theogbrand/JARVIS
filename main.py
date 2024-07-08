@@ -139,7 +139,7 @@ def add_conversation_data(conversations_arr):
     for file in matching_files:
         with open(os.path.join(directory, file), 'r+') as f:
             data = json.load(f)
-            data["conversations"].append(conversations_arr)
+            data["conversations"].extend(conversations_arr)
             f.seek(0)
             f.truncate()
             json.dump(data, f)
