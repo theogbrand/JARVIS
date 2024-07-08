@@ -101,7 +101,8 @@ async def deepgram_transcribe(
             json_data = file_response.to_json()
             data = json.loads(json_data)
 
-            return data["results"]["summary"]["short"]
+            # return data["results"]["summary"]["short"]
+            return data['results']['channels'][0]['alternatives'][0]['transcript']
 
         except Exception as e:
             print(f"Exception: {e}")
@@ -176,6 +177,7 @@ if __name__ == "__main__":
         ai_response = LLM(system_message=system_prompt).generate_response(
             messages=conversation
         )
+        # ai_response = reflect_tool(human_reply, conversation)
         conversation.append({"role": "assistant", "content": ai_response})
         llm_conversation.append({"timestamp": to_epoch(datetime.now()), "role": "assistant", "content": ai_response})
         gpt_time = time() - current_time
