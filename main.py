@@ -17,6 +17,7 @@ from record import speech_to_text
 from groq_stt import groq_transcribe
 from llm import LLM
 import json
+from datetime import datetime
 
 # Load API keys
 load_dotenv()
@@ -114,6 +115,35 @@ def log(log: str):
         f.write(log)
 
 
+def to_epoch(dt):
+    return int(dt.timestamp())
+
+
+# Example function to simulate a loop capturing user and AI conversations
+def add_conversation_data(role, message):
+    with open("conv.json", "r+") as f:
+        now = datetime.now()
+        key = to_epoch(now.replace(hour=0, minute=0, second=0, microsecond=0))
+        
+        try:
+            conversations_data = json.load(f)
+        except json.JSONDecodeError:
+            conversations_data = {"date": key, "conversation_counter": 0, "conversations": []}
+        
+        if conversations_data["date"] != key:
+            conversations_data = {"date": key, "conversation_counter": 0, "conversations": []}
+        
+        data_to_add = {"timestamp": to_epoch(now), "role": role, "message": message}
+        conversations_data["conversations"].append(data_to_add)
+        conversations_data["conversation_counter"] += 1
+        
+        f.seek(0)
+        f.truncate()
+        json.dump(conversations_data, f)
+        
+        return conversations_data
+
+
 if __name__ == "__main__":
     while True:
         # Record audio
@@ -130,11 +160,11 @@ if __name__ == "__main__":
         # human_reply = " ".join(
         #     word_dict.get("word") for word_dict in words if "word" in word_dict
         # )
-        
-        conversation_data = {"human_reply": human_reply}
-        with open("conv.json", "a") as f:
-            json.dump(conversation_data, f)
-            f.write("\n")
+        # conversation_data = {"human_reply": human_reply}
+        # with open("conv.json", "a") as f:
+        #     json.dump(conversation_data, f)
+        #     f.write("\n")
+        add_conversation_data("user", human_reply)
         transcription_time = time() - current_time
         log(f"Finished transcribing in {transcription_time:.2f} seconds.")
 
@@ -167,10 +197,14 @@ if __name__ == "__main__":
         # Add response as a new line to conv.txt
         # with open("conv.txt", "a") as f:
         #     f.write(f"{ai_response}\n")
-        conversation_data = {"ai_response": ai_response}
-        with open("conv.json", "a") as f:
-            json.dump(conversation_data, f)
-            f.write("\n")
+        # conversation_data = {"ai_response": ai_response}
+        # with open("conv.json", "a") as f:
+        #     json.dump(conversation_data, f)
+        #     f.write("\n")
+        add_conversation_data("assistant", ai_response)
         sound.play()
+        # Save to JSON file
+        # with open("voice_memos.json", "w") as file:
+        #     json.dump(conversations, file, indent=4)
         pygame.time.wait(int(sound.get_length() * 1000))
         print(f"\n --- USER: {human_reply}\n --- JARVIS: {ai_response}\n")
