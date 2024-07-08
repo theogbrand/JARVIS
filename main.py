@@ -119,29 +119,55 @@ def to_epoch(dt):
     return int(dt.timestamp())
 
 
-# Example function to simulate a loop capturing user and AI conversations
-def add_conversation_data(role, message):
-    with open("conv.json", "r+") as f:
-        now = datetime.now()
-        key = to_epoch(now.replace(hour=0, minute=0, second=0, microsecond=0))
+def add_conversation_data(conversations_arr):
+    # Define the directory to search
+    directory = 'entries'
+
+    # Get the current date at the start of the day (midnight)
+    now = datetime.now()
+    start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    current_day_epoch = to_epoch(start_of_day)
+
+    # Search for JSON files in the directory with names matching the current day's epoch timestamp
+    matching_files = []
+    for filename in os.listdir(directory):
+        if filename.endswith('.json') and str(current_day_epoch) in filename:
+            matching_files.append(filename)
+
+    # Print the matching files
+    for file in matching_files:
+        print("matched file: ", file)
+
+    # Optional: Load and process the JSON files
+    for file in matching_files:
+        with open(os.path.join(directory, file), 'r+') as f:
+            data = json.load(f)
+            data["conversations"].append(conversations_arr)
+            f.seek(0)
+            f.truncate()
+            json.dump(data, f)
+            # print(data)
+    # with open("conv.json", "r+") as f:
+    #     now = datetime.now()
+    #     key = to_epoch(now.replace(hour=0, minute=0, second=0, microsecond=0))
         
-        try:
-            conversations_data = json.load(f)
-        except json.JSONDecodeError:
-            conversations_data = {"date": key, "conversation_counter": 0, "conversations": []}
+    #     try:
+    #         conversations_data = json.load(f)
+    #     except json.JSONDecodeError:
+    #         conversations_data = {"date": key, "conversation_counter": 0, "conversations": []}
         
-        if conversations_data["date"] != key:
-            conversations_data = {"date": key, "conversation_counter": 0, "conversations": []}
+    #     if conversations_data["date"] != key:
+    #         conversations_data = {"date": key, "conversation_counter": 0, "conversations": []}
         
-        data_to_add = {"timestamp": to_epoch(now), "role": role, "message": message}
-        conversations_data["conversations"].append(data_to_add)
-        conversations_data["conversation_counter"] += 1
+    #     data_to_add = {"timestamp": to_epoch(now), "role": role, "message": message}
+    #     conversations_data["conversations"].append(data_to_add)
+    #     # conversations_data["conversation_counter"] += 1
         
-        f.seek(0)
-        f.truncate()
-        json.dump(conversations_data, f)
+    #     f.seek(0)
+    #     f.truncate()
+    #     json.dump(conversations_data, f)
         
-        return conversations_data
+    #     return conversations_data
 
 
 if __name__ == "__main__":
@@ -150,13 +176,14 @@ if __name__ == "__main__":
         log("Listening...")
         speech_to_text()
         log("Done listening")
-
+        llm_conversation = []
         # Transcribe audio
         current_time = time()
         # human_reply = groq_transcribe(RECORDING_PATH)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         human_reply = loop.run_until_complete(deepgram_transcribe(RECORDING_PATH))
+        print(human_reply)
         # human_reply = " ".join(
         #     word_dict.get("word") for word_dict in words if "word" in word_dict
         # )
@@ -164,7 +191,7 @@ if __name__ == "__main__":
         # with open("conv.json", "a") as f:
         #     json.dump(conversation_data, f)
         #     f.write("\n")
-        add_conversation_data("user", human_reply)
+        # add_conversation_data("user", human_reply)
         transcription_time = time() - current_time
         log(f"Finished transcribing in {transcription_time:.2f} seconds.")
 
@@ -173,11 +200,12 @@ if __name__ == "__main__":
         # context += f"\Brandon: {human_reply}\nJarvis: "
         # response = request_gpt(context)
         conversation.append({"role": "user", "content": human_reply})
+        llm_conversation.append({"timestamp": to_epoch(datetime.now()), "role": "user", "content": human_reply})
         ai_response = LLM(system_message=system_prompt).generate_response(
             messages=conversation
         )
         conversation.append({"role": "assistant", "content": ai_response})
-        print("conversation: ", conversation)
+        llm_conversation.append({"timestamp": to_epoch(datetime.now()), "role": "assistant", "content": ai_response})
         gpt_time = time() - current_time
         log(f"Finished generating response in {gpt_time:.2f} seconds.")
 
@@ -201,7 +229,8 @@ if __name__ == "__main__":
         # with open("conv.json", "a") as f:
         #     json.dump(conversation_data, f)
         #     f.write("\n")
-        add_conversation_data("assistant", ai_response)
+        # add_conversation_data("assistant", ai_response)
+        add_conversation_data(llm_conversation)
         sound.play()
         # Save to JSON file
         # with open("voice_memos.json", "w") as file:
