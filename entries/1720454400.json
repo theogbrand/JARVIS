@@ -1,0 +1,65 @@
+{
+    "date": 1720454400,
+    "conversations": [
+        {
+            "timestamp": 1720452120,
+            "role": "user",
+            "message": "Today, I met Dani from Reka and learned a couple of things from his startup journey."
+        },
+        {
+            "timestamp": 1720452140,
+            "role": "assistant",
+            "message": "Ah, startup wisdom from the trenches! Sounds intriguing. What were the key takeaways from your chat with Dani?"
+        },
+        {
+            "timestamp": 1720452000,
+            "role": "user",
+            "message": "The first thing is about him cementing my view that to excel in this industry, you need a well rounded, vertically integrated understanding of the LLM stack."
+        },
+        {
+            "timestamp": 1720452010,
+            "role": "assistant",
+            "message": "That's a solid insight. In the rapidly evolving AI industry, a comprehensive understanding of the entire LLM stack is indeed crucial. It allows for better innovation and problem-solving across all levels of development."
+        },
+        {
+            "timestamp": 1720452020,
+            "role": "user",
+            "message": "The other thing I learned from Dani is to be very clear on what use case or what problem the user is trying to solve with AI and with a proper understanding of this objective, apply the right tool or the right lever to solve it."
+        },
+        {
+            "timestamp": 1720452030,
+            "role": "assistant",
+            "message": "Absolutely spot on. Dani's advice is golden - understanding the problem is half the battle. Once you've nailed that, picking the right AI tool becomes a breeze. It's like choosing the right wrench for a specific bolt."
+        },
+        {
+            "timestamp": 1720452040,
+            "role": "user",
+            "message": "Yes. Another example is we shouldn't always be training our models from scratch. knowing when to use continuous pre training, fine tuning, and alignment is very important so as to be effective with resource management."
+        },
+        {
+            "timestamp": 1720452050,
+            "role": "assistant",
+            "message": "You've hit the nail on the head. It's like cooking - sometimes you need to start from raw ingredients, other times a pre-made sauce works wonders. Knowing when to use each approach in AI is crucial for efficiency and effectiveness. It's all about working smarter, not harder."
+        },
+        {
+            "timestamp": 1720452060,
+            "role": "user",
+            "message": "He also reminded me that sometimes prompting is all you need and specifically in context learning. So really making sure that building a baseline with just prompting and retrieval augmented generation (RAG), I think it's all the more important."
+        },
+        {
+            "timestamp": 1720452070,
+            "role": "assistant",
+            "message": "Absolutely right. Prompting and in-context learning can be surprisingly powerful. It's like having a Swiss Army knife in your AI toolkit. Starting with a RAG baseline is smart - it's often the quickest way to get impressive results without overcomplicating things. Sometimes, the simplest solution is the most elegant."
+        },
+        {
+            "timestamp": 1720452080,
+            "role": "user",
+            "message": "They highlighted that their focus is on being a R&D partner and using their open weights as kind of a service, I guess. And they try to work with partners that already have, solid distribution channel. Say, for example, Oppo, who wants to have their own custom mobile phones or, like a global ride hailing app like Gojek, who already have the end user customers, and they want to infuse their AI, custom AI, into their existing product."
+        },
+        {
+            "timestamp": 1720452090,
+            "role": "assistant",
+            "message": "Interesting strategy. They're playing to their strengths - being the brains behind the operation. By partnering with established players, they get to focus on AI innovation while leveraging existing distribution channels. It's a smart move, combining cutting-edge tech with market reach. Sounds like they're aiming to be the Intel Inside of AI."
+        }
+    ]
+}

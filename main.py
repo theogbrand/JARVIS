@@ -14,11 +14,14 @@ from pygame import mixer
 from tts import get_audio_response
 
 from record import speech_to_text
+
 # from groq_stt import groq_transcribe
 from llm import LLM
 import json
 from datetime import datetime
 from rag_tools import reflect_tool
+import stat
+
 
 # Load API keys
 load_dotenv()
@@ -102,7 +105,7 @@ async def deepgram_transcribe(
             data = json.loads(json_data)
 
             # return data["results"]["summary"]["short"]
-            return data['results']['channels'][0]['alternatives'][0]['transcript']
+            return data["results"]["channels"][0]["alternatives"][0]["transcript"]
 
         except Exception as e:
             print(f"Exception: {e}")
@@ -122,7 +125,7 @@ def to_epoch(dt):
 
 
 def add_conversation_data(conversations_arr):
-    directory = 'entries'
+    directory = "entries"
 
     # Get the current date at the start of the day (midnight)
     now = datetime.now()
@@ -131,14 +134,21 @@ def add_conversation_data(conversations_arr):
 
     matching_files = []
     for filename in os.listdir(directory):
-        if filename.endswith('.json') and str(current_day_epoch) in filename:
+        if filename.endswith(".json") and str(current_day_epoch) in filename:
             matching_files.append(filename)
 
     # for file in matching_files:
     #     print("matched file: ", file)
-
+    if len(matching_files) == 0:
+        new_filename = f"{current_day_epoch}.json"
+        file_path = os.path.join(directory, new_filename)
+        with open(file_path, "w") as f:
+            json.dump(
+                {"date": current_day_epoch, "conversations": conversations_arr}, f
+            )
+    
     for file in matching_files:
-        with open(os.path.join(directory, file), 'r+') as f:
+        with open(os.path.join(directory, file), "r+") as f:
             data = json.load(f)
             data["conversations"].extend(conversations_arr)
             f.seek(0)
@@ -173,13 +183,25 @@ if __name__ == "__main__":
         # Get response from AI
         current_time = time()
         conversation.append({"role": "user", "content": human_reply})
-        llm_conversation.append({"timestamp": to_epoch(datetime.now()), "role": "user", "content": human_reply})
+        llm_conversation.append(
+            {
+                "timestamp": to_epoch(datetime.now()),
+                "role": "user",
+                "content": human_reply,
+            }
+        )
         ai_response = LLM(system_message=system_prompt).generate_response(
             messages=conversation
         )
         # ai_response = reflect_tool(human_reply, conversation)
         conversation.append({"role": "assistant", "content": ai_response})
-        llm_conversation.append({"timestamp": to_epoch(datetime.now()), "role": "assistant", "content": ai_response})
+        llm_conversation.append(
+            {
+                "timestamp": to_epoch(datetime.now()),
+                "role": "assistant",
+                "content": ai_response,
+            }
+        )
         gpt_time = time() - current_time
         log(f"Finished generating response in {gpt_time:.2f} seconds.")
 
