@@ -4,6 +4,7 @@
 1. try Suno [Bark](https://huggingface.co/suno/bark?text=hi+i+like+pizza) or [Coqui](https://huggingface.co/coqui/XTTS-v2) TTS for better mL support
 2. Bark has powerful text-based features like one-shot diarisation, adding [laughter] and indicating music style purely from text description
 3. [Vapi](https://vapi.ai/) for natural intruption while AI speaking
+4. LAION's [BUD-E](https://github.com/LAION-AI/natural_voice_assistant) has interesting roadmap similar to ours
 
 <p align="center">
   <img src="media/cqb_conv.png" alt="JARVIS helping me choose a firearm" width="100%"/>
